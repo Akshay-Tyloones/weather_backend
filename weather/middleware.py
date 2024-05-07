@@ -15,7 +15,7 @@ class TokenMiddleware:
         if access_token:
             access_token = access_token.split(' ')[1]
         protected_urls = [
-                    {'path': '/api/weather/add-to-favourite', 'method': 'POST'},
+                    {'path': '/api/weather/add-to-favourite/', 'method': 'POST'},
                     {'path': '/api/weather/get-favourite-cities-weather/', 'method':'GET'},
                 ]
         for url_data in protected_urls:
