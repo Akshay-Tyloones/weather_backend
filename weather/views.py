@@ -99,12 +99,12 @@ def get_favourite_cities_weather(request):
         return JsonResponse({'error': 'Favorite cities not found for this user'}, status=404)
 
    
-    city_list = [city.city_name for city in favorite_cities]
+    # city_list = [city.city_name for city in favorite_cities]
     city_temperatures = []
-    for city_name in city_list:
-        temperature = get_weather(city_name)
+    for favorite_city in favorite_cities:
+        temperature = get_weather(favorite_city.city_name)
         if temperature is not None:
-            city_temperatures.append({'city_name': city_name, 'temperature': temperature})
+            city_temperatures.append({'city_name': favorite_city.city_name, 'temperature': temperature, 'user_id': favorite_city.cognito_user})
 
     return JsonResponse({'city_temperatures': city_temperatures})
 
