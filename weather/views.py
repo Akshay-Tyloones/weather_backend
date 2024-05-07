@@ -37,18 +37,19 @@ def home(request):
 
 
 def add_to_favourite(request):
-    cognito_id = request.headers.get('cognitoId')
+
+    cognito_id = request.cognito_id
+    print('cognito_user_id->', cognito_id)
     city_name = request.headers.get('City')
-    print('cognito_user_id and city->>', cognito_id, city_name)
 
     if not cognito_id:
-        response_data = format_api_response(success=False, message='cognito_id is required')
+        response_data = format_api_response(success=False, message='email is required')
         return JsonResponse(response_data)
     elif not city_name:
         response_data = format_api_response(success=False, message='city name is required')
         return JsonResponse(response_data)
 
-  
+    
     #count number of city
     
     if FavouriteCity.objects.filter(cognito_user=cognito_id).count() >= 5:
@@ -61,11 +62,13 @@ def add_to_favourite(request):
     if FavouriteCity.objects.filter(cognito_user=cognito_id, city_name=city_name).exists():
         response_data = format_api_response(success=False, message="city already exists in favorites")
         return JsonResponse(response_data)
-    #otherwise add in favourite
+
     FavouriteCity.objects.create(cognito_user=cognito_id, city_name=city_name)
 
     response_data = format_api_response(success=True, message="city added successfully")
     return JsonResponse(response_data)
+
+
 
 def get_weather(city_name):
     api_url = "https://api.openweathermap.org/data/2.5/weather?"
@@ -87,7 +90,8 @@ def get_weather(city_name):
 
 
 def get_favourite_cities_weather(request):
-    cognito_id = request.headers.get('cognitoId')
+    cognito_id = request.cognito_id
+    print('cognito_user_id->', cognito_id)
     if not cognito_id:
         return JsonResponse({'error': 'cognito_id is required'}, status=400)
     try:
