@@ -41,7 +41,7 @@ class TokenMiddleware:
         try:
             decoded_token = jwt.decode(
                 access_token,
-                rsa_key,
+                data,
                 algorithms=['RS256'],
                 audience=os.getenv('CLIENT_ID'),    
             )
