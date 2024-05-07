@@ -35,7 +35,6 @@ def home(request):
          return JsonResponse(response_data)
     
 
-
 def add_to_favourite(request):
 
     cognito_id = request.cognito_id
@@ -101,13 +100,13 @@ def get_favourite_cities_weather(request):
 
    
     city_list = [city.city_name for city in favorite_cities]
-    weather_info = {}
+    city_temperatures = []
     for city_name in city_list:
         temperature = get_weather(city_name)
         if temperature is not None:
-            weather_info[city_name] = {'temperature': temperature}
+            city_temperatures.append({'city_name': city_name, 'temperature': temperature})
 
-    return JsonResponse({'weather_info': weather_info})
+    return JsonResponse({'city_temperatures': city_temperatures})
 
 
     
