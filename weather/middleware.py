@@ -15,16 +15,15 @@ class TokenMiddleware:
         if access_token:
             access_token = access_token.split(' ')[1]
         protected_urls = [
-                    # {'path': '/get-image/', 'method': 'GET'},
-                    {'path': '/api/weather/add-to-favourite', 'method': 'POST'},
+                    {'path': '/api/weather/add-to-favourite/', 'method': 'POST'},
                     {'path': '/api/weather/get-favourite-cities-weather/', 'method':'GET'},
                 ]
         for url_data in protected_urls:
             if request.path == url_data['path'] and request.method == url_data['method']:
                 decoded_token = self.validate_token(access_token)
                 if decoded_token:
-                    print('token is valid:', decoded_token)
-                    cognito_id = decoded_token['sub']
+                    print('Decoded Token Content:', decoded_token)
+                    cognito_id = decoded_token.get('sub')
                     print('cognito->', cognito_id)
                     request.cognito_id = cognito_id
                 else:
@@ -37,12 +36,12 @@ class TokenMiddleware:
         url = 'https://cognito-idp.ap-south-1.amazonaws.com/ap-south-1_XIzhTBXNy/.well-known/jwks.json'
         response = requests.get(url)
         data = response.json()
-        # rsa_key = jwks_data['keys'][1]
+        rsa_key = data['keys'][1]
 
         try:
             decoded_token = jwt.decode(
                 access_token,
-                data,
+                rsa_key,
                 algorithms=['RS256'],
                 audience=os.getenv('CLIENT_ID'),    
             )
