@@ -22,7 +22,7 @@ class TokenMiddleware:
             if request.path == url_data['path'] and request.method == url_data['method']:
                 decoded_token = self.validate_token(access_token)
                 if decoded_token:
-                    print('Decoded Token Content:', decoded_token)
+                    print('Decoded Token Content:', decoded_token, decoded_token.json())
                     cognito_id = decoded_token.get('sub')
                     print('cognito->', cognito_id)
                     request.cognito_id = cognito_id
