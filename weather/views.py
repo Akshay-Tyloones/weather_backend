@@ -43,7 +43,7 @@ def add_to_favourite(request):
     city_name = request.headers.get('City')
 
     if not cognito_id:
-        response_data = format_api_response(success=False, message='email is required')
+        response_data = format_api_response(success=False, message='cognito_id is required')
         return JsonResponse(response_data)
     elif not city_name:
         response_data = format_api_response(success=False, message='city name is required')
