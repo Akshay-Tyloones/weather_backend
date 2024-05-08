@@ -110,21 +110,19 @@ def get_favourite_cities_weather(request):
 
 
 def get_favourite_cities(request):
-    try:
-        favorite_cities = FavouriteCity.objects.all()
-    except FavouriteCity.DoesNotExist:
-        return JsonResponse({'error': 'No favorite cities found'}, status=404)
-
+    print(dir(request))
+    cognito_id = request.cognito_id
     city_temperatures = []
-    for favorite_city in favorite_cities:
-        temperature = get_weather(favorite_city.city_name)
-        if temperature is not None:
-            city_temperatures.append({
-                'city_name': favorite_city.city_name,
-                'temperature': temperature,
-                'user_id': favorite_city.cognito_user
-            })
-
+    if cognito_id:
+        favorite_cities = FavouriteCity.objects.all()
+        for favorite_city in favorite_cities:
+            temperature = get_weather(favorite_city.city_name)
+            if temperature is not None:
+                city_temperatures.append({
+                    'city_name': favorite_city.city_name,
+                    'temperature': temperature,
+                    'user_id': favorite_city.cognito_user
+                })
     return JsonResponse({'city_temperatures': city_temperatures})
 
 
