@@ -3,7 +3,7 @@ version: '3.12'
 services:
   web:
     build: .
-    container_name: weather_web_container
+    container_name: weather_web_container_1
     environment:
       - PYTHONUNBUFFERED=1
       - DB_HOST=postgres_db
@@ -14,6 +14,46 @@ services:
     command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:7000"
     ports:
       - "7000:7000"
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres_db
+    networks:
+      - weather_net
+
+  web2:
+    build: .
+    container_name: weather_web_container_2
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DB_HOST=postgres_db
+      - DB_PORT=5432
+      - DB_NAME=favourite_cities
+      - DB_USER=postgres
+      - DB_PASSWORD=Akshay
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:7000"
+    ports:
+      - "7001:7000"
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres_db
+    networks:
+      - weather_net
+
+  web3:
+    build: .
+    container_name: weather_web_container_3
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DB_HOST=postgres_db
+      - DB_PORT=5432
+      - DB_NAME=favourite_cities
+      - DB_USER=postgres
+      - DB_PASSWORD=Akshay
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:7000"
+    ports:
+      - "7002:7000"
     volumes:
       - .:/app
     depends_on:

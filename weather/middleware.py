@@ -36,8 +36,6 @@ class TokenMiddleware:
         url = 'https://cognito-idp.ap-south-1.amazonaws.com/ap-south-1_XIzhTBXNy/.well-known/jwks.json'
         response = requests.get(url)
         data = response.json()
-        # rsa_key = data['keys'][1]
-
         try:
             decoded_token = jwt.decode(
                 access_token,
