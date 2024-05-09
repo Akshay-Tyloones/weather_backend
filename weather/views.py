@@ -9,6 +9,7 @@ load_dotenv()
 
 def home(request):
     city = request.GET.get("city", "indore")
+
     weather_url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&appid=a03a1b1193e5bff9dffc0e3297215f56'
     forcast_url = f'https://api.openweathermap.org/data/2.5/forecast?q={city}&units=metric&appid=a03a1b1193e5bff9dffc0e3297215f56&cnt=5'
     try:
@@ -36,7 +37,6 @@ def home(request):
     
 
 def add_to_favourite(request):
-
     cognito_id = request.cognito_id
     print('cognito_user_id->', cognito_id)
     city_name = request.headers.get('City')
